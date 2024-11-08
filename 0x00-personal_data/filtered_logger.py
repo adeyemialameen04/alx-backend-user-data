@@ -33,8 +33,8 @@ def filter_datum(fields: List[str], redaction: str,
                  message: str, separator: str) -> str:
     """ Function to return log message obfuscated """
     for field in fields:
-        message = re.sub(field+'=.*?'+separator,
-                         field+'='+redaction+separator, message)
+        message = re.sub(field + '=.*?' + separator,
+                         field + '=' + redaction + separator, message)
     return message
 
 
@@ -62,6 +62,7 @@ def get_db() -> mysql.connector.connection.MySQLConnection:
                                                            database=db)
     return connector
 
+
 def main():
     """ entry point """
     db = get_db()
@@ -74,6 +75,7 @@ def main():
         logger.info(message.strip())
     cursor.close()
     db.close()
+
 
 if __name__ == "__main__":
     main()
