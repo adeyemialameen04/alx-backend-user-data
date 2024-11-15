@@ -1,0 +1,2 @@
+GET http://0.0.0.0:5000/api/v1/users/me
+Cookie: _my_session_id=66654bd1-747e-412d-8342-5bbbdf4019d4
