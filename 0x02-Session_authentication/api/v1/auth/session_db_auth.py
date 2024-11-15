@@ -16,14 +16,14 @@ class SessionDBAuth(SessionExpAuth):
         usersession = UserSession(session_id=session_id, user_id=user_id)
         usersession.save()
         return session_id
-    
+
     def user_id_for_session_id(self, session_id=None):
         """user id for session"""
         get_session = UserSession.search({'session_id': session_id})
         if get_session is None:
             return None
         return super().user_id_for_session_id(session_id)
-    
+
     def destroy_session(self, request=None) -> bool:
         """destroy session from database"""
         if request is None:

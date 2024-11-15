@@ -8,7 +8,6 @@ from flask import Flask, jsonify, abort, request
 from flask_cors import (CORS, cross_origin)
 import os
 
-
 app = Flask(__name__)
 app.register_blueprint(app_views)
 CORS(app, resources={r"/api/v1/*": {"origins": "*"}})
@@ -17,23 +16,29 @@ auth = getenv("AUTH_TYPE")
 
 if auth == 'auth':
     from api.v1.auth.auth import Auth
+
     auth = Auth()
 
 if auth == 'basic_auth':
     from api.v1.auth.basic_auth import BasicAuth
+
     auth = BasicAuth()
 
 if auth == 'session_auth':
     from api.v1.auth.session_auth import SessionAuth
+
     auth = SessionAuth()
 
 if auth == 'session_exp_auth':
     from api.v1.auth.session_exp_auth import SessionExpAuth
+
     auth = SessionExpAuth()
 
 if auth == 'session_db_auth':
     from api.v1.auth.session_db_auth import SessionDBAuth
+
     auth = SessionDBAuth()
+
 
 @app.before_request
 def check_auth():
@@ -42,11 +47,11 @@ def check_auth():
         return
 
     excluded_paths = ['/api/v1/status/',
-                       '/api/v1/unauthorized/',
-                         '/api/v1/forbidden/',
-                           '/api/v1/auth_session/login/',
-                             '/api/v1/auth_session/logout/'
-                             ]  # noqa
+                      '/api/v1/unauthorized/',
+                      '/api/v1/forbidden/',
+                      '/api/v1/auth_session/login/',
+                      '/api/v1/auth_session/logout/'
+                      ]  # noqa
 
     if not auth.require_auth(request.path, excluded_paths):
         return

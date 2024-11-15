@@ -7,7 +7,6 @@ from os import path
 import json
 import uuid
 
-
 TIMESTAMP_FORMAT = "%Y-%m-%dT%H:%M:%S"
 DATA = {}
 
@@ -19,7 +18,7 @@ class Base():
     def __init__(self, *args: list, **kwargs: dict):
         """ Initialize a Base instance
         """
-        s_class = str(self.__class__.__name__) # User
+        s_class = str(self.__class__.__name__)  # User
         if DATA.get(s_class) is None:
             DATA[s_class] = {}
 
@@ -38,7 +37,7 @@ class Base():
     def __eq__(self, other: TypeVar('Base')) -> bool:
         """ Equality
         """
-        if type(self) != type(other):
+        if not isinstance(other, type(self)):
             return False
         if not isinstance(self, Base):
             return False
@@ -61,7 +60,7 @@ class Base():
     def load_from_file(cls):
         """ Load all objects from file
         """
-        s_class = cls.__name__ # User
+        s_class = cls.__name__  # User
         file_path = ".db_{}.json".format(s_class)
         DATA[s_class] = {}  # DATA = {'User': {}}
         if not path.exists(file_path):
@@ -126,6 +125,7 @@ class Base():
         """ Search all objects with matching attributes
         """
         s_class = cls.__name__
+
         def _search(obj):
             if len(attributes) == 0:
                 return True
@@ -133,5 +133,5 @@ class Base():
                 if (getattr(obj, k) != v):
                     return False
             return True
-        
+
         return list(filter(_search, DATA[s_class].values()))
